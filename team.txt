@@ -1,2 +1,6 @@
 Trello Board: https://trello.com/b/EV7JEZh1/sleep-outside-team-11
+<<<<<<< HEAD
 Luis J Pardo (Modificado en Local)
+=======
+Luis Javier Pardo (modificado en GitHub)
+>>>>>>> 456cb0dcd498b43b6386847ac6e30f71fd7d03f2
