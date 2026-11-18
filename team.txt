@@ -1,2 +1,2 @@
 Trello Board: https://trello.com/b/EV7JEZh1/sleep-outside-team-11
-Luis Javier Pardo (modificado en GitHub) 2.0
+Luis Javier Pardo (modificado en GitHub) test passed
