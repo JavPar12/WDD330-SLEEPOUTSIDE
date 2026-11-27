@@ -24,7 +24,7 @@ export default class ShoppingCart {
       this.productList.addEventListener("click", (event) => {
         const removeControl = event.target.closest(".cart-card__remove");
         const quantityControl = event.target.closest(
-          ".cart-card__quantity-btn"
+          ".cart-card__quantity-btn",
         );
         if (!removeControl && !quantityControl) return;
         if (removeControl) {
@@ -46,7 +46,7 @@ export default class ShoppingCart {
 
   removeItem(itemId) {
     const itemIndex = this.cartItems.findIndex(
-      (item) => String(item.Id) === String(itemId)
+      (item) => String(item.Id) === String(itemId),
     );
     if (itemIndex !== -1) {
       this.cartItems.splice(itemIndex, 1);
@@ -67,7 +67,7 @@ export default class ShoppingCart {
       this.productList,
       this.cartItems,
       "afterbegin",
-      true
+      true,
     );
     this.renderCartTotal(this.cartItems);
   }
@@ -89,7 +89,7 @@ export default class ShoppingCart {
 
   increaseQuantity(itemId) {
     const item = this.cartItems.find(
-      (item) => String(item.Id) === String(itemId)
+      (item) => String(item.Id) === String(itemId),
     );
     if (item) {
       item.Quantity += 1;
@@ -99,7 +99,7 @@ export default class ShoppingCart {
 
   decreaseQuantity(itemId) {
     const item = this.cartItems.find(
-      (item) => String(item.Id) === String(itemId)
+      (item) => String(item.Id) === String(itemId),
     );
     if (item) {
       item.Quantity -= 1;

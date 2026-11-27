@@ -35,7 +35,7 @@ export function renderListWithTemplate(
   parentElement,
   list,
   position = "afterbegin",
-  clear = false
+  clear = false,
 ) {
   if (!parentElement) return;
   if (clear) {
@@ -48,10 +48,12 @@ export function renderListWithTemplate(
 // update cart item count badge if present
 export function updateCartCount() {
   const cartItems = getLocalStorage("so-cart") || [];
-  const list = (Array.isArray(cartItems) ? cartItems : [cartItems]).filter(Boolean);
+  const list = (Array.isArray(cartItems) ? cartItems : [cartItems]).filter(
+    Boolean,
+  );
   const totalCount = list.reduce(
     (sum, item) => sum + (Number(item?.Quantity) || 1),
-    0
+    0,
   );
   const badge = document.querySelector(".cart-count");
   if (badge) {
