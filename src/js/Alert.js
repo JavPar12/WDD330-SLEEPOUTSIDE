@@ -1,5 +1,5 @@
 export default class Alert {
-  constructor(path = '/json/alerts.json') {
+  constructor(path = "/json/alerts.json") {
     this.path = path;
   }
 
@@ -19,21 +19,21 @@ export default class Alert {
     const alerts = await this.getAlerts();
     if (alerts.length === 0) return;
 
-    const section = document.createElement('section');
-    section.classList.add('alert-list');
+    const section = document.createElement("section");
+    section.classList.add("alert-list");
 
     alerts.forEach((alert) => {
-      const p = document.createElement('p');
+      const p = document.createElement("p");
       p.textContent = alert.message;
       p.style.backgroundColor = alert.background;
       p.style.color = alert.color;
-      p.style.margin = '0';
-      p.style.padding = '0.75rem 1rem';
-      p.style.textAlign = 'center';
-      p.style.fontWeight = 'bold';
+      p.style.margin = "0";
+      p.style.padding = "0.75rem 1rem";
+      p.style.textAlign = "center";
+      p.style.fontWeight = "bold";
       section.appendChild(p);
     });
 
-    document.querySelector('main').prepend(section);
+    document.querySelector("main").prepend(section);
   }
 }

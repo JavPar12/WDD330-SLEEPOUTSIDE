@@ -9,7 +9,11 @@ export default class ProductDetails {
 
   async init() {
     // the product details are needed before rendering the HTML
-    this.product = await this.dataSource.findProductById(this.productId);
+    try {
+      this.product = await this.dataSource.findProductById(this.productId);
+    } catch (error) {
+      this.product = null;
+    }
 
     if (!this.product) {
       this.renderNotFound();
@@ -44,13 +48,14 @@ export default class ProductDetails {
   renderProductDetails() {
     const detail = document.querySelector(".product-detail");
     const p = this.product;
+    const image = p.Images?.PrimaryLarge || p.Image;
     detail.innerHTML = `
-      <h3>${p.Brand.Name}</h3>
-      <h2 class="divider">${p.NameWithoutBrand}</h2>
-      <img class="divider" src="${p.Image}" alt="${p.Name}" />
+      <h3>${p.Brand?.Name ?? ""}</h3>
+      <h2 class="divider">${p.NameWithoutBrand ?? p.Name}</h2>
+      <img class="divider" src="${image}" alt="${p.Name}" />
       <p class="product-card__price">$${p.FinalPrice}</p>
-      <p class="product__color">${p.Colors[0].ColorName}</p>
-      <p class="product__description">${p.DescriptionHtmlSimple}</p>
+      <p class="product__color">${p.Colors?.[0]?.ColorName ?? ""}</p>
+      <p class="product__description">${p.DescriptionHtmlSimple ?? ""}</p>
       <div class="product-detail__add">
         <button id="addToCart" data-id="${p.Id}">Add to Cart</button>
       </div>`;
