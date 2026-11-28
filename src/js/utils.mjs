@@ -143,3 +143,29 @@ export function setBreadcrumb(html = "") {
   nav.innerHTML = html;
   nav.hidden = !html;
 }
+
+// small, non-intrusive message at the top of <main> (type: "error" or "success")
+export function alertMessage(message, scroll = true, type = "error") {
+  const alert = document.createElement("div");
+  alert.classList.add("alert", `alert--${type}`);
+  alert.setAttribute("role", "alert");
+
+  const text = document.createElement("p");
+  text.textContent = message;
+
+  const close = document.createElement("button");
+  close.type = "button";
+  close.setAttribute("aria-label", "Close message");
+  close.textContent = "X";
+  close.addEventListener("click", () => alert.remove());
+
+  alert.append(text, close);
+  qs("main").prepend(alert);
+
+  // the checkout form is long, so bring the user back to the message
+  if (scroll) window.scrollTo(0, 0);
+}
+
+export function removeAllAlerts() {
+  document.querySelectorAll(".alert").forEach((alert) => alert.remove());
+}

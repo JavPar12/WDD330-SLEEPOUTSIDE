@@ -8,6 +8,8 @@ import {
   formatCategory,
   escapeHtml,
   setBreadcrumb,
+  alertMessage,
+  removeAllAlerts,
 } from "./utils.mjs";
 
 export default class ProductDetails {
@@ -54,6 +56,14 @@ export default class ProductDetails {
 
     setLocalStorage("so-cart", cartItems);
     updateCartCount();
+
+    // feedback for the user
+    removeAllAlerts();
+    alertMessage(
+      `${this.product.NameWithoutBrand ?? this.product.Name} was added to your cart.`,
+      true,
+      "success"
+    );
   }
 
   renderProductDetails() {

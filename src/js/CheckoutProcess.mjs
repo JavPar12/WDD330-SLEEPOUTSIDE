@@ -1,4 +1,9 @@
-import { getLocalStorage } from "./utils.mjs";
+import {
+  getLocalStorage,
+  setLocalStorage,
+  alertMessage,
+  removeAllAlerts,
+} from "./utils.mjs";
 import ExternalServices from "./ExternalServices.mjs";
 
 const services = new ExternalServices();
@@ -25,6 +30,22 @@ function formDataToJSON(formElement) {
     convertedJSON[key] = value;
   });
   return convertedJSON;
+}
+
+// the server sends the details of what went wrong in the body of the response;
+// this turns them into a simple list of texts (whatever shape they come in)
+function errorMessages(err) {
+  const body = err && err.message;
+  if (typeof body === "string") return [body];
+  if (body && typeof body === "object") {
+    const texts = Object.values(body).flatMap((value) =>
+      value && typeof value === "object"
+        ? Object.values(value).map(String)
+        : [String(value)]
+    );
+    if (texts.length > 0) return texts;
+  }
+  return ["Something went wrong. Please try again."];
 }
 
 export default class CheckoutProcess {
@@ -86,6 +107,7 @@ export default class CheckoutProcess {
   }
 
   // builds the order object and sends it to the server
+  // returns true when the order was accepted, false when something went wrong
   async checkout(form) {
     this.calculateOrderTotal();
 
@@ -96,6 +118,19 @@ export default class CheckoutProcess {
     order.shipping = this.shipping;
     order.items = packageItems(this.list);
 
-    return await services.checkout(order);
+    try {
+      await services.checkout(order);
+    } catch (err) {
+      // stay on the form (the user keeps what was typed) and explain what happened
+      removeAllAlerts();
+      // each alert goes on top of the previous one, so we add them in reverse order
+      errorMessages(err).reverse().forEach((message) => alertMessage(message));
+      return false;
+    }
+
+    // the order went through: empty the cart and go to the success page
+    setLocalStorage(this.key, []);
+    window.location.assign("/checkout/success.html");
+    return true;
   }
 }
