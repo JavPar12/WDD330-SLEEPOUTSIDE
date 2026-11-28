@@ -4,12 +4,19 @@ const baseURL =
 
 const CATEGORIES = ["tents", "backpacks", "sleeping-bags", "hammocks"];
 
-function convertToJson(res) {
-  if (res.ok) {
-    return res.json();
-  } else {
-    throw new Error("Bad Response");
+// reads the body of the response first: when the server answers with an error
+// (400, 500...) the body has the details, so we send them on in the error
+async function convertToJson(res) {
+  let jsonResponse;
+  try {
+    jsonResponse = await res.json();
+  } catch (error) {
+    jsonResponse = { message: res.statusText || "Bad Response" };
   }
+  if (res.ok) {
+    return jsonResponse;
+  }
+  throw { name: "servicesError", message: jsonResponse };
 }
 
 export default class ExternalServices {
@@ -66,11 +73,6 @@ export default class ExternalServices {
       body: JSON.stringify(payload),
     };
     const response = await fetch(`${baseURL}checkout`, options);
-    const data = await response.json();
-    if (response.ok) {
-      return data;
-    }
-    // keep the server message so the page can show it
-    throw { name: "servicesError", message: data };
+    return await convertToJson(response);
   }
 }

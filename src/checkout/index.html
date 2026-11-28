@@ -23,6 +23,8 @@
               id="fname"
               name="fname"
               type="text"
+              minlength="2"
+              maxlength="40"
               autocomplete="given-name"
               required
             />
@@ -32,6 +34,8 @@
               id="lname"
               name="lname"
               type="text"
+              minlength="2"
+              maxlength="40"
               autocomplete="family-name"
               required
             />
@@ -59,6 +63,9 @@
               id="state"
               name="state"
               type="text"
+              pattern="[A-Za-z]{2}"
+              maxlength="2"
+              title="Two-letter state code, for example ID"
               autocomplete="address-level1"
               required
             />
@@ -69,6 +76,9 @@
               name="zip"
               type="text"
               inputmode="numeric"
+              pattern="[0-9]{5}"
+              maxlength="5"
+              title="5-digit zip code, for example 83440"
               autocomplete="postal-code"
               required
             />
@@ -82,6 +92,9 @@
               name="cardNumber"
               type="text"
               inputmode="numeric"
+              pattern="[0-9]{16}"
+              maxlength="16"
+              title="16 digits, without spaces"
               autocomplete="cc-number"
               required
             />
@@ -92,6 +105,9 @@
               name="expiration"
               type="text"
               placeholder="MM/YY"
+              pattern="(0?[1-9]|1[0-2])/[0-9]{2}"
+              maxlength="5"
+              title="Month and year, for example 08/30"
               autocomplete="cc-exp"
               required
             />
@@ -102,6 +118,9 @@
               name="code"
               type="text"
               inputmode="numeric"
+              pattern="[0-9]{3,4}"
+              maxlength="4"
+              title="3 or 4 digits"
               autocomplete="cc-csc"
               required
             />
