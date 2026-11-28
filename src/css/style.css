@@ -503,3 +503,40 @@ header {
   padding: 1rem;
   list-style: none;
 }
+
+/* ===== Checkout page ===== */
+.checkout-form fieldset {
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem 1rem;
+  border: 1px solid var(--light-grey);
+}
+
+.checkout-form legend {
+  padding: 0 0.5rem;
+  font-weight: bold;
+}
+
+.checkout-form label {
+  display: block;
+  margin-top: 0.6rem;
+  font-size: var(--small-font);
+}
+
+.checkout-form input {
+  width: 100%;
+  padding: 0.5em 0.6em;
+  font-size: 1em;
+  border: 1px solid var(--light-grey);
+}
+
+.checkout-form .order-summary p {
+  padding: 0.25rem 0;
+}
+
+.checkout-form output {
+  font-weight: bold;
+}
+
+#checkout-message {
+  text-align: center;
+}
