@@ -1,4 +1,14 @@
-import { setLocalStorage, getLocalStorage, updateCartCount } from "./utils.mjs";
+import {
+  setLocalStorage,
+  getLocalStorage,
+  updateCartCount,
+  getParam,
+  getDiscount,
+  responsiveImage,
+  formatCategory,
+  escapeHtml,
+  setBreadcrumb,
+} from "./utils.mjs";
 
 export default class ProductDetails {
   constructor(productId, dataSource) {
@@ -21,6 +31,7 @@ export default class ProductDetails {
     }
 
     this.renderProductDetails();
+    this.renderBreadcrumb();
     document.title = `Sleep Outside | ${this.product.Name}`;
 
     // the button only exists after the HTML is rendered
@@ -48,17 +59,45 @@ export default class ProductDetails {
   renderProductDetails() {
     const detail = document.querySelector(".product-detail");
     const p = this.product;
-    const image = p.Images?.PrimaryLarge || p.Image;
+    const { percent, amount } = getDiscount(p);
+
+    // the image changes with the screen width
+    const image = responsiveImage(p, {
+      defaultKey: "PrimaryMedium",
+      sources: [
+        { media: "(min-width: 1000px)", key: "PrimaryExtraLarge" },
+        { media: "(min-width: 500px)", key: "PrimaryLarge" },
+      ],
+    });
+
+    const discountFlag =
+      percent > 0
+        ? `<p class="product-detail__discount">Save $${amount.toFixed(2)} (${percent}% off)</p>`
+        : "";
+
     detail.innerHTML = `
       <h3>${p.Brand?.Name ?? ""}</h3>
       <h2 class="divider">${p.NameWithoutBrand ?? p.Name}</h2>
-      <img class="divider" src="${image}" alt="${p.Name}" />
+      ${image}
       <p class="product-card__price">$${p.FinalPrice}</p>
+      ${discountFlag}
       <p class="product__color">${p.Colors?.[0]?.ColorName ?? ""}</p>
       <p class="product__description">${p.DescriptionHtmlSimple ?? ""}</p>
       <div class="product-detail__add">
         <button id="addToCart" data-id="${p.Id}">Add to Cart</button>
       </div>`;
+  }
+
+  // "Tents" (link back to the list) when we know the category of the product
+  renderBreadcrumb() {
+    const category = getParam("category");
+    if (!category) {
+      setBreadcrumb("");
+      return;
+    }
+    setBreadcrumb(
+      `<a href="/product_listing/index.html?category=${encodeURIComponent(category)}">${escapeHtml(formatCategory(category))}</a>`
+    );
   }
 
   renderNotFound() {
