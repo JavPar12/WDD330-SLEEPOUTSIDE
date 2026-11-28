@@ -12,7 +12,7 @@ function convertToJson(res) {
   }
 }
 
-export default class ProductData {
+export default class ExternalServices {
   async getData(category) {
     const response = await fetch(`${baseURL}products/search/${category}`);
     const data = await convertToJson(response);
@@ -54,5 +54,23 @@ export default class ProductData {
         seen.add(product.Id);
         return true;
       });
+  }
+
+  // sends the order to the server (POST) and returns the server response
+  async checkout(payload) {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    };
+    const response = await fetch(`${baseURL}checkout`, options);
+    const data = await response.json();
+    if (response.ok) {
+      return data;
+    }
+    // keep the server message so the page can show it
+    throw { name: "servicesError", message: data };
   }
 }
